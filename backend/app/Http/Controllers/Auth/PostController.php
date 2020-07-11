@@ -9,11 +9,16 @@ use App\Post;
 
 class PostController extends Controller
 {
+    // 記事投稿画面
     public function index()
     {
+        if (!Auth::check()) {
+            redirect('/');
+        }
         return view('auth.drafts.new');
     }
 
+    // 記事投稿送信
     public function postArticle(Request $request)
     {
         // バリデーション
@@ -34,6 +39,15 @@ class PostController extends Controller
             'tag3' => $tags[2] ?? null,
             'body' => $request->article,
         ]);
-        return redirect('/');
+        // 記事を投稿したらそのまま投稿された記事にリダイレクト
+        // 変数展開するからダブルクォーテーションで囲んでる
+        return redirect("/drafts/{$article->id}");
     }
+
+    public function showArticle($id)
+    {
+        $article = Post::where('id', $id)->first();
+        return view('auth.item', compact('article'));
+    }
+
 }
