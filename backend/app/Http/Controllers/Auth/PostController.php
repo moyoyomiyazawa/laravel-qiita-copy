@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -48,6 +49,12 @@ class PostController extends Controller
     {
         $article = Post::where('id', $id)->first();
         return view('auth.item', compact('article'));
+    }
+
+    public function showTopPage()
+    {
+        $articles = DB::table('posts')->orderBy('created_at', 'asc')->get();
+        return view('top', compact('articles'));
     }
 
 }

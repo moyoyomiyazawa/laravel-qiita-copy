@@ -13,15 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('top');
-});
+// トップページ
+Route::get('/', 'Auth\PostController@showTopPage')->name('top');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// 記事投稿
 Route::get('/drafts/new', 'Auth\PostController@index')->name('drafts.new');
 Route::post('/drafts/new', 'Auth\PostController@postArticle')->name('drafts.new.posts');
 
+// 記事詳細
 Route::get('/drafts/{id}', 'Auth\PostController@showArticle')->name('item');
